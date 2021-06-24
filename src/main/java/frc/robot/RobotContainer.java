@@ -37,9 +37,11 @@ import frc.robot.commands.MecanumMDrive;
 import frc.robot.commands.Outtake;
 import frc.robot.commands.PrepareShoot;
 import frc.robot.commands.Rdown;
+import frc.robot.commands.RecordMacroToggle;
 import frc.robot.commands.Rup;
 import frc.robot.commands.SpinManual;
 import frc.robot.commands.UpperProccess;
+import frc.robot.commands.resetDriverPerms;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Climber2;
 import frc.robot.subsystems.DriveTrain;
@@ -175,8 +177,8 @@ public class RobotContainer {
 
     manual.whileActiveContinuous(new ManualAim(turret, () -> operator.getZ(), () -> operator.getY()));
 
-  manual.negate().and(o3.negate()).and(o8).whileActiveContinuous(new ManualAim(turret, () -> operator.getZ()*.45, () -> operator.getY()*.60), true);
-  manual.negate().and(o3).and(o8.negate()).whileActiveContinuous(new CameraTarget(turret, () -> 80,() -> 100).asProxy());
+    manual.negate().and(o3.negate()).and(o8).whileActiveContinuous(new ManualAim(turret, () -> operator.getZ()*.45, () -> operator.getY()*.60), true);
+    manual.negate().and(o3).and(o8.negate()).whileActiveContinuous(new CameraTarget(turret, () -> 80,() -> 100).asProxy());
 
 
 
@@ -209,7 +211,10 @@ public class RobotContainer {
     
     //o12.whenPressed(new CalibrateBalls(i_Intake, 0)); //Will Calibarte the value of balls
 
-    // d11.whileActiveOnce(new RecordMacroToggle(pController));
+    d11.whenPressed(new RecordMacroToggle(pController));
+
+    
+    d12.whenPressed(new resetDriverPerms(train));
 
     // o9.whenActive(new GoToPosA(turret));
 

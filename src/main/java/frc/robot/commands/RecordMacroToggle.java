@@ -4,16 +4,15 @@
 
 package frc.robot.commands;
 
-import java.io.IOException;
-
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.RobotContainer;
+import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.PlaybackController;
 
 public class RecordMacroToggle extends CommandBase {
   PlaybackController pController;
-  Boolean doRecord = false;
+  Boolean n = true;
   Double trigger = 0.0;
+  Double starttime;
   public RecordMacroToggle(PlaybackController p) {
     pController = p;
     addRequirements(pController);
@@ -21,36 +20,30 @@ public class RecordMacroToggle extends CommandBase {
 
   // Called when the command is initially scheduled.
   @Override
-  public void initialize() {} // lol i never use this
+  public void initialize() {}
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    doRecord = !doRecord; // flips recording state
-    if (doRecord) {
-      try {
-        if (RobotContainer.Joystickd1()){ trigger = 1.0;} // converting bool to double sucks for no reason at all
-        else{trigger = 0.0;}
-		    pController.record(
-          RobotContainer.Joystickdy(),
-          RobotContainer.Joystickdz(),
-          RobotContainer.Joystickdx(),
-          0.0, 0.0, 0.0, // operator joy stick is not needed
-          trigger
-		    );
-	    } catch (IOException e) {
-		    e.printStackTrace(); // heehee
-	}
-    }
+    if(n){starttime = (double) System.currentTimeMillis(); n = false;}
+
+    pController.record(
+      (double) System.currentTimeMillis() - starttime,
+      DriveTrain.grabLeft1(),
+      DriveTrain.grabLeft2(),
+      DriveTrain.grabRight1(),
+      DriveTrain.grabRight2()
+      );
+    
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {} // do nothing on end and this will never be interrupted
+  public void end(boolean interrupted) {}
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() { // nop
+  public boolean isFinished() {
     return false;
   }
 }

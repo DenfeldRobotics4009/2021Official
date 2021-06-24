@@ -178,48 +178,26 @@ public class DriveTrain extends SubsystemBase {
     encoders[0] = (leftE.getVelocity()/Constants.RPMtoPowerVal);   encoders[1] = (leftE2.getVelocity()/Constants.RPMtoPowerVal);
     encoders[2] = (rightE.getVelocity()/Constants.RPMtoPowerVal);  encoders[3] = (rightE2.getVelocity()/Constants.RPMtoPowerVal);
 
-    if(mecBool){ // checking wether to activate strafing
-       // Compare values with respective parts
-       //TODO this
-      left1.set( strafingSystem(forward, multiplyer, twist,
-        side,
-         1,
-          "L1", left1.get()));
-      left2.set( strafingSystem(forward, multiplyer, twist,
-        side,
-         1,
-          "L2", left2.get()));
-      right1.set( strafingSystem(forward, multiplyer, twist,
-        side,
-         1,
-          "R1", right1.get()));
-      right2.set( strafingSystem(forward, multiplyer, twist,
-        side,
-         1,
-          "R2", right2.get()));
 
-
-    }else{
     // setting motors
-      // double coffeeMaker = motor(forward, multiplyer, twist, side, 1, "Brewing Coffee"); hehe
-
-      left1.set( motor(forward, multiplyer, twist, 
-            // side,
-              0.0,
-                        1, "L1")     );
-      left2.set( motor(forward, multiplyer, twist, 
-            // sideLeft2,
-              0.0, 
-                        1, "L2")     );
-      right1.set(motor(forward, multiplyer, twist, 
-            // sideRight1,
-              0.0,
-                        1, "R1") * -1);
-      right2.set(motor(forward, multiplyer, twist,
-            // sideRight2, 
-              0.0, 
-                        1, "R2") * -1);
-    }
+    // double coffeeMaker = motor(forward, multiplyer, twist, side, 1, "Brewing Coffee");
+    left1.set( motor(forward, multiplyer, twist, 
+          // side,
+            0.0,
+                      1, "L1")     );
+    left2.set( motor(forward, multiplyer, twist, 
+          // sideLeft2,
+            0.0, 
+                      1, "L2")     );
+    right1.set(motor(forward, multiplyer, twist, 
+          // sideRight1,
+            0.0,
+                      1, "R1") * -1);
+    right2.set(motor(forward, multiplyer, twist,
+          // sideRight2, 
+            0.0, 
+                      1, "R2") * -1);
+    
   }
 }
   public static double motor(double forward, double multiplyer, double twist, double side, double jank,String motor){
