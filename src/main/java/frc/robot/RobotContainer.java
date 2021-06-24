@@ -26,7 +26,6 @@ import frc.robot.commands.CameraTarget;
 import frc.robot.commands.CancelShot;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.commands.FinalShoot;
-import frc.robot.commands.GoToPosA;
 import frc.robot.commands.InnerProccess;
 import frc.robot.commands.Intake;
 import frc.robot.commands.Ldown;
@@ -35,6 +34,7 @@ import frc.robot.commands.ManualAim;
 import frc.robot.commands.ManualDrive;
 import frc.robot.commands.MecanumMDrive;
 import frc.robot.commands.Outtake;
+import frc.robot.commands.PlayMacro;
 import frc.robot.commands.PrepareShoot;
 import frc.robot.commands.Rdown;
 import frc.robot.commands.RecordMacroToggle;
@@ -211,9 +211,9 @@ public class RobotContainer {
     
     //o12.whenPressed(new CalibrateBalls(i_Intake, 0)); //Will Calibarte the value of balls
 
+    // TODO: Keybindings are subject to change for macro controlling
     d11.whenPressed(new RecordMacroToggle(pController));
-
-    
+    d12.whenReleased(new PlayMacro());
     d12.whenPressed(new resetDriverPerms(train));
 
     // o9.whenActive(new GoToPosA(turret));

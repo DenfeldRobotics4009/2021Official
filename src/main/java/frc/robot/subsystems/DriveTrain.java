@@ -166,7 +166,7 @@ public class DriveTrain extends SubsystemBase {
    *  @param twist The twist of the joystick
    *  @param side the side to side angle of the joystick
    */
-  public static void MecanumDrive(double side, double twist, double forward, boolean mecBool, double multiplyer) {
+  public static void Drive(double side, double twist, double forward, boolean mecBool, double multiplyer) {
     
     if(allow){
     

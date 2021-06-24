@@ -19,8 +19,7 @@ public class MecanumMDrive extends CommandBase {
 
   private final DoubleSupplier y, z, x;
   private final BooleanSupplier powered;
-  private Boolean mecBool, tempBool = false, reverse;
-  private int count = 0;
+  private Boolean mecBool;
   
   //private final double tunedy, tunedz;
 
@@ -86,7 +85,7 @@ public class MecanumMDrive extends CommandBase {
     //   catch(NullPointerException e){DriveTrain.MecanumDrive(tunedy, tunedz, tunedx, mecBool, multi);};
     // }else{DriveTrain.MecanumDrive(tunedy, tunedz, tunedx, mecBool, multi);}
 
-    DriveTrain.MecanumDrive(tunedy, tunedz, tunedx, mecBool, multi);
+    DriveTrain.Drive(tunedy, tunedz, tunedx, mecBool, multi);
     
   }
   

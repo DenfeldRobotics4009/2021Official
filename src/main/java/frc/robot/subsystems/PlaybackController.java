@@ -18,18 +18,15 @@ public class PlaybackController extends SubsystemBase {
   }
 
   @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-  }
+  public void periodic() {}
 
   public void record(Double... vals){csv.writeSet(vals);}
 
-  public void play(){
-
-    if(n){starttime = (double) System.currentTimeMillis(); n = false;}
+  public void play(){ 
+    if(n){starttime = (double) System.currentTimeMillis(); n = false;} // first value is allocated to time
     if ((System.currentTimeMillis() - starttime) > csv.countDouble(count, 0.0)){count+=1;
-      DriveTrain.setLeft1(csv.countDouble(count, 0.0)); count += 1;
-      DriveTrain.setLeft2(csv.countDouble(count, 0.0)); count += 1;
+      DriveTrain.setLeft1(csv.countDouble(count, 0.0)); count += 1; // make sure order is the same as it is recorded as
+      DriveTrain.setLeft2(csv.countDouble(count, 0.0)); count += 1; 
       DriveTrain.setRight1(csv.countDouble(count, 0.0)); count += 1;
       DriveTrain.setRight2(csv.countDouble(count, 0.0)); count += 1;
     }

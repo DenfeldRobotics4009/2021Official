@@ -44,8 +44,6 @@ public class tools {
 
         return arr;
     }
-
-
     /**This module will only add things on top of the csv file and not edit existing values.
      * @param filePath the path to the file being selected
      * @param ToAddStringArray The string array that will be added in the csv file
