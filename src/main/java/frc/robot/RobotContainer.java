@@ -262,6 +262,4 @@ public class RobotContainer {
   public static double Joystickox(){return operator.getX();}
 
   public static boolean Joystickd1(){return driver.getTrigger();}
-
-
 }

@@ -63,7 +63,7 @@ private double bottomShooterValue = 0;
   }
 
 
-  /*  I have edited this file so that each motor has a seperate encoder and will not communicate thier values to eachother untill
+  /*  I have edited this file so that each motor has a seperate encoder and will not communicate thier values to eachother until
   they are checked by the boolean to give the all-clear to fire. Hopefully this will work, if not then.... it will work. hopefully
   if not than its just a dumb issue with syntax or spelling.*/
 
