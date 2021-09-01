@@ -170,7 +170,5 @@ public class CSV_lib {
 
         tempScanner.close();
         return lineAr;
-        
-    }
-    
+    }   
 }

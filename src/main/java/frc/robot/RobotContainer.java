@@ -20,8 +20,6 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import frc.robot.commands.BackMDrive;
-import frc.robot.commands.CalibrateBalls;
 import frc.robot.commands.CameraTarget;
 import frc.robot.commands.CancelShot;
 import frc.robot.commands.ExampleCommand;
@@ -31,27 +29,22 @@ import frc.robot.commands.Intake;
 import frc.robot.commands.Ldown;
 import frc.robot.commands.Lup;
 import frc.robot.commands.ManualAim;
-import frc.robot.commands.ManualDrive;
-import frc.robot.commands.MecanumMDrive;
+import frc.robot.commands.ManualArcadeDrive;
 import frc.robot.commands.Outtake;
-import frc.robot.commands.PlayMacro;
 import frc.robot.commands.PrepareShoot;
 import frc.robot.commands.Rdown;
-import frc.robot.commands.RecordMacroToggle;
 import frc.robot.commands.Rup;
 import frc.robot.commands.SpinManual;
 import frc.robot.commands.UpperProccess;
-import frc.robot.commands.resetDriverPerms;
+import frc.robot.subsystems.ArcadeDriveTrain;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.Climber2;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.ExampleSubsystem;
 import frc.robot.subsystems.FrontIntake;
 import frc.robot.subsystems.InnerIntake;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
 import frc.robot.subsystems.WheelSpinner;
-import frc.robot.subsystems.PlaybackController;
 
 
 /**
@@ -66,7 +59,7 @@ public class RobotContainer {
   SendableChooser<Integer> autoChooser = new SendableChooser<>();
 
   private final ExampleSubsystem m_exampleSubsystem = new ExampleSubsystem();
-  private final DriveTrain train = new DriveTrain();
+  private final ArcadeDriveTrain train = new ArcadeDriveTrain(0.4, 0.5, 0.75, 0.01);
   private final Turret turret = new Turret();
   private final Shooter s_shooter = new Shooter();
   private final Climber climber = new Climber();
@@ -74,7 +67,6 @@ public class RobotContainer {
   private final InnerIntake i_Intake = new InnerIntake();
   private final WheelSpinner wof = new WheelSpinner();
   private final FrontIntake f_Intake = new FrontIntake();
-  private final PlaybackController pController = new PlaybackController();
 
   private final static Joystick driver = new Joystick(0);
   private final static Joystick operator = new Joystick(1);
@@ -115,10 +107,10 @@ public class RobotContainer {
     SmartDashboard.putData("Autonomous", autoChooser);
 
     train.setDefaultCommand(
-        new MecanumMDrive(
-          train, () -> driver.getX(),
-           () -> driver.getZ(),
-            () -> driver.getY(),
+        new ManualArcadeDrive(
+          train,
+           () -> driver.getY(),
+            () -> driver.getZ(),
              () -> driver.getTrigger()
     ));
     
@@ -199,8 +191,8 @@ public class RobotContainer {
     o2.whenHeld(new Outtake(f_Intake, i_Intake), false);
 
     
-    o5.whileActiveContinuous(new Lup(climber, () -> operator.getThrottle()));
-    o6.whileActiveContinuous(new Rup(climber2, () -> operator.getThrottle()));
+    //o5.whileActiveContinuous(new Lup(climber, () -> operator.getThrottle()));
+    //o6.whileActiveContinuous(new Rup(climber2, () -> operator.getThrottle()));
     up.or(upR).or(upL).whileActiveContinuous(new Lup(climber, () -> operator.getThrottle()).alongWith(new Rup(climber2, () -> operator.getThrottle())));
 
     // o3.whileActiveContinuous(new Ldown(climber, () -> operator.getThrottle()));
@@ -212,17 +204,15 @@ public class RobotContainer {
     //o12.whenPressed(new CalibrateBalls(i_Intake, 0)); //Will Calibarte the value of balls
 
     // TODO: Keybindings are subject to change for macro controlling
-    d11.whenPressed(new RecordMacroToggle(pController));
-    d12.whenReleased(new PlayMacro());
-    d12.whenPressed(new resetDriverPerms(train));
+
 
     // o9.whenActive(new GoToPosA(turret));
 
-    d12.toggleWhenActive(new BackMDrive(train,
-    () -> driver.getX(),
-      () -> driver.getZ(),
-      () -> driver.getY(),
-        () -> driver.getTrigger()));
+    // d12.toggleWhenActive(new BackMDrive(train,
+    // () -> driver.getX(),
+    //   () -> driver.getZ(),
+    //   () -> driver.getY(),
+    //     () -> driver.getTrigger()));
     
     
 
@@ -240,26 +230,15 @@ public class RobotContainer {
     switch (select){
        
       case 1:  return SitAndShoot3Balls.withTimeout(4);
-      case 2:  return SitAndShoot3Balls.withTimeout(4).andThen(new ManualDrive(train, () -> -.7, () -> 0, () -> false).withTimeout(0.5));
-      case 3:  return new WaitCommand(2).andThen(SitAndShoot3Balls.withTimeout(4).andThen(new ManualDrive(train, () -> -.7, () -> 0, () -> false).withTimeout(0.5)));
+      case 2:  return SitAndShoot3Balls.withTimeout(4);
+      case 3:  return new WaitCommand(2);
      // case 4:  return new ChangePosition(train, 30, -30, 0, 0);
-      default: return SitAndShoot3Balls.withTimeout(4).andThen(new ManualDrive(train, () -> -.7, () -> 0, () -> false).withTimeout(0.5));
+      default: return SitAndShoot3Balls.withTimeout(4);
 
     }
   }
-  public Command CalibrateBall() {
-    return new CalibrateBalls(i_Intake, 3);
-  }
+
   public Boolean Controlled() {
      return (Math.abs(operator.getY()) >= .1) || Math.abs(operator.getZ()) >= .3;
   }
-
-  public static double Joystickdy(){return driver.getY();}
-  public static double Joystickdz(){return driver.getZ();}
-  public static double Joystickdx(){return driver.getX();}
-  public static double Joystickoy(){return operator.getY();}
-  public static double Joystickoz(){return operator.getZ();}
-  public static double Joystickox(){return operator.getX();}
-
-  public static boolean Joystickd1(){return driver.getTrigger();}
 }

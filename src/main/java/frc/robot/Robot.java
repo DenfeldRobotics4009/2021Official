@@ -69,7 +69,6 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousInit() {
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
-    initialCalibrate = m_robotContainer.CalibrateBall();
 
     initialCalibrate.schedule();
     // schedule the autonomous command (example)
